@@ -42,7 +42,7 @@ public class ImageDao {
 	public ArrayList<ImageVo> getImgTitle(String pt_place) {
 		ArrayList<ImageVo> list=new ArrayList<>();
 		sb.setLength(0);
-		sb.append("select p.pt_title, i.img_temp1, p.pt_like, p.pt_hit ");
+		sb.append("select p.pt_title, i.img_url, p.pt_like, p.pt_hit ");
 		sb.append("from post p, image i ");
 		sb.append("where p.pt_no=i.pt_no and pt_place=? ");
 		sb.append("order by pt_create_date asc ");
@@ -56,7 +56,7 @@ public class ImageDao {
 			
 			int pt_hit=rs.getInt("pt_hit");
 			int pt_like=rs.getInt("pt_like");
-			String img_temp1=rs.getString("img_temp1");
+			String img_temp1=rs.getString("img_url");
 			String pt_title=rs.getString("pt_title");
 			
 			vo=new ImageVo(pt_place, img_temp1, pt_title, pt_like, pt_hit);
@@ -72,7 +72,7 @@ public class ImageDao {
 	public ArrayList<ImageVo> getHits(String pt_place) {
 		ArrayList<ImageVo> list=new ArrayList<>();
 		sb.setLength(0);
-		sb.append("select p.pt_title, i.img_temp1, p.pt_like, p.pt_hit ");
+		sb.append("select p.pt_title, i.img_url, p.pt_like, p.pt_hit ");
 		sb.append("from post p, image i ");
 		sb.append("where p.pt_no=i.pt_no and pt_place=? ");
 		sb.append("order by pt_hit desc ");
@@ -86,7 +86,7 @@ public class ImageDao {
 			
 			int pt_hit=rs.getInt("pt_hit");
 			int pt_like=rs.getInt("pt_like");
-			String img_temp1=rs.getString("img_temp1");
+			String img_temp1=rs.getString("img_url");
 			String pt_title=rs.getString("pt_title");
 			
 			vo=new ImageVo(pt_place, img_temp1, pt_title, pt_like, pt_hit);
@@ -103,7 +103,7 @@ public class ImageDao {
 	public ArrayList<ImageVo> getLike(String pt_place) {
 		ArrayList<ImageVo> list=new ArrayList<>();
 		sb.setLength(0);
-		sb.append("select p.pt_title, i.img_temp1, p.pt_like, p.pt_hit ");
+		sb.append("select p.pt_title, i.img_url, p.pt_like, p.pt_hit ");
 		sb.append("from post p, image i ");
 		sb.append("where p.pt_no=i.pt_no and pt_place=? ");
 		sb.append("order by pt_like desc ");
@@ -117,7 +117,7 @@ public class ImageDao {
 			
 			int pt_hit=rs.getInt("pt_hit");
 			int pt_like=rs.getInt("pt_like");
-			String img_temp1=rs.getString("img_temp1");
+			String img_temp1=rs.getString("img_url");
 			String pt_title=rs.getString("pt_title");
 			
 			vo=new ImageVo(pt_place, img_temp1, pt_title, pt_like, pt_hit);
@@ -134,7 +134,7 @@ public class ImageDao {
 		ArrayList<ImageVo> list=new ArrayList<>();
 		sb.setLength(0);
 		sb.append("select * ");
-		sb.append("from(select p.pt_place, p.pt_title, i.img_temp1, p.pt_like, p.pt_hit ");
+		sb.append("from(select p.pt_place, p.pt_title, i.img_url, p.pt_like, p.pt_hit ");
 		sb.append("from post p, image i ");
 		sb.append("where p.pt_no=i.pt_no ");
 		sb.append("order by pt_like desc) ");
@@ -149,7 +149,7 @@ public class ImageDao {
 			String pt_place=rs.getString("pt_place");
 			int pt_hit=rs.getInt("pt_hit");
 			int pt_like=rs.getInt("pt_like");
-			String img_temp1=rs.getString("img_temp1");
+			String img_temp1=rs.getString("img_url");
 			String pt_title=rs.getString("pt_title");
 			
 			vo=new ImageVo(pt_place, img_temp1, pt_title, pt_like, pt_hit);
@@ -166,7 +166,7 @@ public class ImageDao {
 		ArrayList<ImageVo> list=new ArrayList<>();
 		sb.setLength(0);
 		sb.append("select * ");
-		sb.append("from(select p.pt_place, p.pt_title, i.img_temp1, p.pt_like, p.pt_hit ");
+		sb.append("from(select p.pt_place, p.pt_title, i.img_url, p.pt_like, p.pt_hit ");
 		sb.append("from post p, image i ");
 		sb.append("where p.pt_no=i.pt_no ");
 		sb.append("order by pt_hit desc) ");
@@ -181,7 +181,7 @@ public class ImageDao {
 			String pt_place=rs.getString("pt_place");
 			int pt_hit=rs.getInt("pt_hit");
 			int pt_like=rs.getInt("pt_like");
-			String img_temp1=rs.getString("img_temp1");
+			String img_temp1=rs.getString("img_url");
 			String pt_title=rs.getString("pt_title");
 			
 			vo=new ImageVo(pt_place, img_temp1, pt_title, pt_like, pt_hit);

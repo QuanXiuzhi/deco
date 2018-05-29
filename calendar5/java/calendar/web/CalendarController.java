@@ -124,7 +124,7 @@ public class CalendarController {
 		Map<String, Object> detailInfo = calendarService.selectCalenderDetailInfo(map); // map으로 보내고
 
 		model.addAttribute("detailInfo", detailInfo);
-		System.out.println(detailInfo);
+		//System.out.println(detailInfo);
 
 		//id 세션 
 		HttpSession session = request.getSession();
@@ -194,8 +194,18 @@ public class CalendarController {
 
 
 	@RequestMapping("editor.do")
-	public String editor( HttpServletRequest request) throws Exception {
+	public String editor( HttpServletRequest request,
+			ModelMap model,
+			@RequestParam Map<String, Object> map) throws Exception {
 
+		Map<String, Object> detailInfo = new HashMap<String, Object>();
+		if(map.get("No")!=null) {
+			System.out.println("No" + map.get("No"));
+			detailInfo = calendarService.selectCalenderDetailInfo(map); // map으로 보내고
+
+		}
+		model.addAttribute("detailInfo", detailInfo);
+		
 		//id 세션 
 		HttpSession session = request.getSession();
 		String id = (String) session.getAttribute("id");

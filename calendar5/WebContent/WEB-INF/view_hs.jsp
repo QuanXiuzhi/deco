@@ -49,6 +49,7 @@
 	</div>
 	
 	<div id="main">
+<%-- 	test : <span>${detailInfo.ptNo}</span> --%>
 		<br /><br /><br />
 		<hr />
 		<p>main</p>
@@ -61,9 +62,12 @@
 		<p id="user"> 
 			<span>${detailInfo.mbId}<img src="images/siot.jpg" alt="profileImg" id="profileImg"/></span>
 		</p>
-		<form id="frm" action="editor.do?ptNo=${detailInfo.mbId}">
+		 <%-- calendar.url="view_hs.do?No="+"<c:out value="${map.ptNo}" />"; --%>
+		 <a href="editor.do?No=${detailInfo.ptNo}" class="button">edit</a>
+<%-- 		<form id="frm" action="editor.do?ptNo=${detailInfo.ptNo}">
+		
 			<input type="submit" class="button" value="edit">
-		</form>		
+		</form>	 --%>	
 		<hr />
 		
 		<p id="place"> 

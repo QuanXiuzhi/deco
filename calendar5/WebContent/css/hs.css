@@ -23,6 +23,10 @@
 		background-color: #ffffff;
 	}
 	
+	a {
+		text-decoration: none;
+	}
+	
 	hr{	
 		color : #fff043;
 		border-color : #b4b4b4;

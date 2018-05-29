@@ -45,17 +45,17 @@
 	
 
 		<div id="sidebar">
-		제목 <input type="text" name="title" id="title">
+		제목 <input type="text" name="title" id="title" value="${detailInfo.ptTitle}">
 		<!-- *회원번호 <input type="text" name="mbNo" id="mbNo" value="1" disabled="disabled">  -->
+		if문 필요!
 		데이트날짜<input id="date" type="date" name="date" value="${param.Data}">
 		<!-- <input type="text" name="date" id="date"> -->
-		날씨 <input type="text" name="weather" id="weather">
-		장소 <input type="text" name="place" id="place">
-		<h3>My Google Maps Demo</h3>
+		날씨 <input type="text" name="weather" id="weather" value="${detailInfo.ptWeather}">
+		장소 <input type="text" name="place" id="place" value="${detailInfo.ptPlace}">
 		<div id="map"></div> 
 		
-		태그 <input type="text" name="tag" id="tag"> 
-		비용 <input type="text" name="price" id="price">
+		태그 <input type="text" name="tag" id="tag" value="${detailInfo.ptTag}"> 
+		비용 <input type="text" name="price" id="price" value="${detailInfo.ptPrice}">
 		<div>
 		
 		공개 여부
@@ -69,7 +69,7 @@
 		<div id="main">
 		${id}님 환영합니다.
 			<p>내용</p>
-			<textarea name="contents" id="contents" cols="100" rows="30"></textarea>
+			<textarea name="contents" id="contents" cols="100" rows="30" value="${detailInfo.ptContents}"></textarea>
 			<input id="browse" type="file"  name="file" onchange="previewFiles()" multiple>
 			<div id="preview"></div>
 		</div>

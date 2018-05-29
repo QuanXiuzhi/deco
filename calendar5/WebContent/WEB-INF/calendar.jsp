@@ -56,12 +56,12 @@
       events: arry      // url를 넘기면 페이지 넘어가게끔 설정되어있음.
     });
     
-    // 날짜 안에 제목 클릭시 새 창 뜨게..
-    /* $(".fc-event-container").click(function() {
-    	console.log(this)
-    	//window.open("popup.do", "editor"); 
-    }) */
-
+    $(".fc-content-skeleton tbody td").click(function() {
+    	
+    	if (!$(this).hasClass("fc-event-container")) {
+    		location.href = "editor.do";
+    	}
+    });
   });
 
 </script>

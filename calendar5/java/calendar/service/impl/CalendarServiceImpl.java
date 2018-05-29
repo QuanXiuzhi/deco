@@ -29,7 +29,7 @@ public class CalendarServiceImpl implements CalendarService {
 	}
 
 	@Override
-	public Object writeAll(Map<String, Object> params) {
+	public int writeAll(Map<String, Object> params) {
 		// TODO Auto-generated method stub
 		try {
 			return calendarMapper.writeAll(params);
@@ -37,7 +37,7 @@ public class CalendarServiceImpl implements CalendarService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return params;
+		return 0;
 		
 	}
 
@@ -48,7 +48,7 @@ public class CalendarServiceImpl implements CalendarService {
 	}
 
 	@Override
-	public HashMap<String, Object> insertImage(Map<String, Object> params) throws Exception {
+	public int insertImage(Map<String, Object> params) throws Exception {
 		// TODO Auto-generated method stub
 		return calendarMapper.insertImage(params);
 	}
@@ -66,6 +66,25 @@ public class CalendarServiceImpl implements CalendarService {
 		
 		return calendarMapper.selectCalenderDetailInfo(map);
 	}
+
+	@Override
+	public void updateptLike(Map<String, Object> map) throws Exception {
+		calendarMapper.updateptLike(map);
+		
+	}
+
+	@Override
+	public void insetPostLikemap(Map<String, Object> map) throws Exception {
+		calendarMapper.insetPostLikemap(map);
+		
+	}
+
+	@Override
+	public int selectPostLikeCount(Map<String, Object> map) throws Exception {	
+		return calendarMapper.selectPostLikeCount(map);
+	}
+
+	
 
 
 }

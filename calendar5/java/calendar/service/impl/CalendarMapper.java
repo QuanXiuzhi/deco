@@ -13,15 +13,23 @@ public interface CalendarMapper {
 
 	List<Map<String, Object>> selectDetail(String no) throws Exception;
 
-	Object writeAll(Map<String, Object> params) throws Exception;
+	int writeAll(Map<String, Object> params) throws Exception;
 
 	HashMap<String, Object> selectLast(int tempMember) throws Exception;
 
-	HashMap<String, Object> insertImage(Map<String, Object> params) throws Exception;
+	int insertImage(Map<String, Object> params) throws Exception;
 
 	// 0525 여림추가
 	int updatePtHit(Map<String, Object> map) throws Exception;
 
 	Map<String, Object> selectCalenderDetailInfo(Map<String, Object> map) throws Exception;
+
+	void updateptLike(Map<String, Object> map) throws Exception;
+
+	void insetPostLikemap(Map<String, Object> map) throws Exception;
+
+	int selectPostLikeCount(Map<String, Object> map) throws Exception;
+
+	
 
 }

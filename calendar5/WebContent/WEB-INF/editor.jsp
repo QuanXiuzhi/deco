@@ -42,7 +42,7 @@
 			장소 
 			<input type="text" name="place" id="place"> 
 			태그 
-			<input type="text" name="ta" id="tag"> 
+			<input type="text" name="tag" id="tag"> 
 			비용 <input type="text" name="price" id="price"> 
 			*공개 여부<input type="text" name="show" id="show" value="1" disabled="disabled"> 
 		</div>

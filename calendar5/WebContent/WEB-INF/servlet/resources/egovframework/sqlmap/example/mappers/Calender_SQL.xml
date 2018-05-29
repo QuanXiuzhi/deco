@@ -19,12 +19,37 @@
 		WHERE PT_NO = #{No}    <!-- 게시물번호가 내가 클릭한 제목의 글번호와 같을때 "PT_HIT +1" 업데이트하기 -->
 
 	</update>
+	
+	<!-- 좋아요 + 1 해주는 것 -->
+	<update id="updateptLike" parameterType="map">
+		UPDATE POST
+		SET PT_LIKE = PT_LIKE +1
+		WHERE PT_NO = #{param}
+	</update>
+
+	<!-- 회원 당 게시글에 하나씩만 좋아요 할 수 있도록 하기 위한 좋아요 로그 테이블 -->
+	<insert id="insetPostLikemap" parameterType="map">
+		INSERT INTO POSTLIKE
+		VALUES
+		(
+			#{param},
+			#{id}
+		)
+	</insert>
+
+	<!-- 해당 회원이 게시글에 좋아요 했는지 확인 용 -->
+	<select id="selectPostLikeCount" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+		  FROM POSTLIKE
+		 WHERE ID = #{id} AND NO = #{param}
+	</select>
 
 	<select id="selectCalenderDetailInfo" parameterType="map"
 		resultType="egovMap">
 		SELECT P.PT_NO,
 		P.PT_TITLE,
 		P.PT_DATE,
+		P.PT_CONTENTS,
 		P.PT_HIT,   <!-- 상세화면에 조회수 보임(조회수 +1한 결과값을 다시 컨트롤러로 보낸후(위에 업데이트쿼리) 그담에 전체 조회해서 화면예 
 			뿌려줌 -->
 		P.PT_PLACE,
@@ -39,16 +64,7 @@
 		where PT_NO = #{No}   <!-- 키명 캘린더.jsp에서 popup.do?No=에서 내가 클릭한 날짜의 글번호가 No라는 키에 
 			담김 -->
 	</select>
-	<!-- 여림 0525 추가  끝--> <!-- 한솔 0528추가 -->
 	
-	<!-- <select id="SelectViewMember" parameterType="map" resultType="egovMap">
-		SELECT MB_ID
-		
-		FROM MEMBER
-	
-	
-	</select> -->
-
 	<select id="selectDetail" resultType="map">
 		SELECT  PT_NO,
 				PT_DATE,
@@ -57,50 +73,7 @@
 		FROM POST
 		WHERE PT_NO = #{_parameter}
 	</select>
-	
-<!-- 	<insert id="writePost" parameterType="egovMap" >
-		INSERT INTO POST (
-                            PT_NO,
-                            PT_TITLE,
-                            MB_NO,
-                            PT_DATE,
-                            PT_SHOW
-                            )
-        VALUES                (
-                            POSTNO_SEQ.NEXTVAL,
-                            "title",
-                            1,
-                         	"18/05/01",
-                         	1                         	
-                            )
-	</insert>
- -->
 
-<!-- 게시글 인서트 쿼리 -->
-<!-- 	<insert id="insertPostNo" parameterType="map">
-	
-		<selectKey keyProperty="ptNo" order="BEFORE" resultType="map"> 비포=인서트 되기전에 실행, 에프터=인서트 된 담에 실행됨
-			select max(PT_NO) + 1 ptNo from post   마지막 글번호에 +1 더해서 추가할 게시물번호를 위 keyProperty="ptNo" 에 넣어줌
-		</selectKey>
-		
-		INSERT INTO
-		POST    인서트할 테이블명
-		(             ()안에 인서트할 칼럼명 적고, 아래 밸류()안에 컬럼 순서대로 넣어줄 값 넣기
-			PT_NO,    
-			PT_CREATE_DATE,
-			PT_TITLE
-			
-		),
-
-		VALUES     주의: 밸류S S 꼭 쓰기
-		(
-			#{ptNo},	 위 셀렉트 키 안에 keyProperty="ptNo" 의 ptNo를 갖다 씀(=마지막 글 다음번호임)
-			now(),   	현재날짜(마리아디비기준)
-			#{ptTitle}
-		)
-		
-	</insert> -->
-	
 	<insert id="insertImageNo" parameterType="map">  <!-- 게시글 올린후 맵에서 게시글 번호 가져온후에 이미지테이블에 게시글 번호 넣어주기. -->
 	
 		<selectKey keyProperty="ptNo" order="BEFORE" resultType="map"> 
@@ -133,8 +106,13 @@
 			PT_DATE,
 			PT_LIKE,
 			PT_HIT,
-			PT_SHOW
-			
+			PT_SHOW,
+			PT_WEATHER,
+			PT_PLACE,
+			PT_TAG,
+			PT_PRICE,
+			PT_CONTENTS
+				
 		)
 		VALUES    
 		(
@@ -145,18 +123,18 @@
 			#{date},
 			0,
 			0,
-			#{show}
-
+			#{show},
+			#{weather},
+			#{place},
+			#{tag},
+			#{price},
+			#{contents}
+			
 		)
-		
-	<!-- 	<selectKey keyProperty="ptNo" order="AFTER" resultType="map"> 
-			select max(PT_NO) from POST
-		</selectKey>
-		 -->
 	</insert>
 	
 	<select id="selectLast" parameterType="int" resultType="hashmap">
-		SELECT  MAX(PT_NO)
+		SELECT  MAX(PT_NO) PT_NO
 		FROM POST
 		WHERE MB_NO = #{_parameter}
 	</select>

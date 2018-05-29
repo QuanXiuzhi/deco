@@ -86,12 +86,12 @@ function checkForm(x){ //매개변수 x를 통해 아이디 비번 비번확인 
 	<style type="text/css">
 	
 		div {
-			 border: 1px solid grey; 
+			 /* border: 1px solid grey;  */
 			/*border-collapse: collapse;*/
 			padding: 14px 18px 14px 18px;
 			width: 321px;
 			height: 460px;
-			margin-left: 100px;
+			margin: 0 auto;
 			
 
 		}

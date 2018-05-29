@@ -8,8 +8,12 @@
 				PT_DATE,
 				PT_TITLE
 
-		FROM POST
+		FROM POST P
+		join MEMBER M
 
+		ON P.MB_NO = M.MB_NO
+
+		WHERE M.MB_ID = #{id}
 	</select>
 
 	<!-- 여림 0525 추가 -->
@@ -74,7 +78,7 @@
 		WHERE PT_NO = #{_parameter}
 	</select>
 
-	<insert id="insertImageNo" parameterType="map">  <!-- 게시글 올린후 맵에서 게시글 번호 가져온후에 이미지테이블에 게시글 번호 넣어주기. -->
+<!-- 	<insert id="insertImageNo" parameterType="map">  게시글 올린후 맵에서 게시글 번호 가져온후에 이미지테이블에 게시글 번호 넣어주기.
 	
 		<selectKey keyProperty="ptNo" order="BEFORE" resultType="map"> 
 			select max(IMG_NO) + 1 imgNo from IMAGE   
@@ -91,7 +95,7 @@
 			#{ptNo},	
 		)
 		
-	</insert>
+	</insert> -->
 	
 
 	<insert id="writeAll" parameterType="map" >  <!-- 게시글 insert test -->
@@ -149,7 +153,8 @@
 			IMG_NAME,
 			PT_NO,
 			MB_NO,
-			UPLOAD_DATE    
+			UPLOAD_DATE, 
+			IMG_URL 
 		)
 
 		VALUES    
@@ -158,10 +163,18 @@
 			#{name},
 			#{ptNo},
 			#{mbNo},
-			SYSDATE	
+			SYSDATE,
+			#{imgUrl}
 		)
 		
 	</insert>
+	
+	<!-- 회원 정보 가져오기 -->
+	<select id="selectMember" parameterType="map" resultType="egovMap">
+		SELECT * 
+		  FROM MEMBER
+	  	 WHERE MB_ID = #{id}
+	</select>
 </mapper>
 
 

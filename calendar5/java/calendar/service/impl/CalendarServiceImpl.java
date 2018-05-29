@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import calendar.service.CalendarService;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Service("calendarService")
 public class CalendarServiceImpl implements CalendarService {
@@ -17,9 +18,9 @@ public class CalendarServiceImpl implements CalendarService {
 	private CalendarMapper calendarMapper;
 
 	@Override
-	public List<Map<String, Object>> selectCalenderList() throws Exception {
+	public List<Map<String, Object>> selectCalenderList(Map<String, Object> map) throws Exception {
 		
-		return calendarMapper.selectCalenderList();
+		return calendarMapper.selectCalenderList(map);
 	}
 
 	@Override
@@ -82,6 +83,11 @@ public class CalendarServiceImpl implements CalendarService {
 	@Override
 	public int selectPostLikeCount(Map<String, Object> map) throws Exception {	
 		return calendarMapper.selectPostLikeCount(map);
+	}
+
+	@Override
+	public EgovMap selectMember(Map<String, Object> paramMap) throws Exception {	
+		return calendarMapper.selectMember(paramMap);
 	}
 
 	

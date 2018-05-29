@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import egovframework.rte.psl.dataaccess.util.EgovMap;
+
 public interface CalendarService {
 
-	List<Map<String, Object>> selectCalenderList() throws Exception;
+	List<Map<String, Object>> selectCalenderList(Map<String, Object> map) throws Exception;
 
 	List<Map<String, Object>> selectDetail(String no) throws Exception;
 
@@ -27,6 +29,8 @@ public interface CalendarService {
 	void insetPostLikemap(Map<String, Object> map) throws Exception;
 
 	int selectPostLikeCount(Map<String, Object> map) throws Exception;
+
+	EgovMap selectMember(Map<String, Object> paramMap) throws Exception;
 
 
 

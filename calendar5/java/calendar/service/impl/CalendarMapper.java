@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Mapper("calendarMapper")
 public interface CalendarMapper {
 
-	List<Map<String, Object>> selectCalenderList() throws Exception;
+	List<Map<String, Object>> selectCalenderList(Map<String, Object> map) throws Exception;
 
 	List<Map<String, Object>> selectDetail(String no) throws Exception;
 
@@ -29,6 +30,8 @@ public interface CalendarMapper {
 	void insetPostLikemap(Map<String, Object> map) throws Exception;
 
 	int selectPostLikeCount(Map<String, Object> map) throws Exception;
+
+	EgovMap selectMember(Map<String, Object> paramMap) throws Exception;
 
 	
 

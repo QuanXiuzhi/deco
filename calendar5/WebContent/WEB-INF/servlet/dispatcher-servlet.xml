@@ -49,6 +49,11 @@
    <!--  컨트롤러 만들수 있게 해줌 -->
     <!-- <mvc:view-controller path="/calendar.do" view-name="calendar"/> -->
     
+    <!-- resource mapping -->
+    <!-- location : 물리적 주소 / mapping : 가상 주소 -->
+	<mvc:resources location="file:/upload/" mapping="/upload/**"/>
+
+
     
     <!-- file Upload -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

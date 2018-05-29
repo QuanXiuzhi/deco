@@ -17,6 +17,8 @@
     max-width: 900px;
     margin: 0 auto;
   }
+  
+  .fc-content-skeleton tbody td {height:100px;}
 
 </style>
 <link rel="stylesheet" type="text/css" href="css/fullcalendar.css">
@@ -56,14 +58,23 @@
       events: arry      // url를 넘기면 페이지 넘어가게끔 설정되어있음.
     });
     
-    $(".fc-content-skeleton tbody td").click(function() {
-    	
+    $(document).on("click", ".fc-content-skeleton tbody td", function() {
+    	var noIndex = $(this).parent().find(".fc-limited").length;
+    	var index = $(this).index() - noIndex;
+    	var data = $(this).parents(".fc-content-skeleton table").find("thead td").eq(index).data("date");
+       	
     	if (!$(this).hasClass("fc-event-container")) {
-    		location.href = "editor.do";
+    		    		
+    		location.href = "editor.do?Data=" + data;
+    		
     	}
     });
+    
+    $(document).on("click", ".fc-future", function() {
+    	location.href = "editor.do?Data=" + $(this).data("date");
+    });
   });
-
+  
 </script>
 </body>
 </html>

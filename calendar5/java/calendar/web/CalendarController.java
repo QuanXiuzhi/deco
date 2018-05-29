@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -30,11 +31,15 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import calendar.service.CalendarService;
 import calendar5.java.JsonUtil;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Controller
 public class CalendarController {
 
-	private static final String UPLOAD_PATH = "C:\\tmp1";
+	private static final String SAVE_PATH = "/upload";
+	private static final String PREFIX_URL = "/upload/";
+
+	private static final String UPLOAD_PATH = "/upload";
 	
 	@Resource(name = "calendarService")
 	private CalendarService calendarService;
@@ -86,13 +91,19 @@ public class CalendarController {
 
 	// 0525 여림 수정
 	@RequestMapping("calendar.do")
-	public String calendar(HttpServletRequest request, ModelMap model) throws Exception {
-		List<Map<String, Object>> map = calendarService.selectCalenderList();
-		model.addAttribute("map", map);
-
+	public String calendar(HttpServletRequest request,
+			@RequestParam Map<String, Object> paramMap,
+			ModelMap model) throws Exception {
 		//id 세션 
 		HttpSession session = request.getSession();
 		String id = (String) session.getAttribute("id");
+		
+		paramMap.put("id", id);
+		
+		List<Map<String, Object>> map = calendarService.selectCalenderList(paramMap);
+		model.addAttribute("map", map);
+
+		
 
 		if (id == null || id.equals("")) {
 			return "redirect:modalLogin.do";
@@ -125,6 +136,8 @@ public class CalendarController {
 
 		return "view_hs";
 	}
+	
+	
 	
 	@RequestMapping(value = "view_hs2.do")
 	public void view_hs2(@RequestParam Map<String, Object> map,
@@ -197,10 +210,10 @@ public class CalendarController {
 	//0528  수지 수정 
 	@RequestMapping(value="/write.do", method=RequestMethod.POST)
 	public String plus( HttpServletRequest request,
-			@RequestParam(value = "title", required = true) String title,
+			@RequestParam(value = "title", required = false) String title,
 			//@RequestParam(value = "mbNo", required = true) String mbNo, 
 			@RequestParam(value = "date", required = true) String date,
-			//@RequestParam(value = "show", required = true) String show,
+			@RequestParam(value = "show", required = true) String show,
 			@RequestParam(value = "weather", required = false) String weather, //날씨
 			@RequestParam(value = "place", required = false) String place, //장소
 			@RequestParam(value = "tag", required = false) String tag, //태그
@@ -208,7 +221,7 @@ public class CalendarController {
 			@RequestParam(value = "contents", required = false) String contents, //내용
 			//@RequestParam(required=false) ArrayList<MultipartFile> files,
 			MultipartHttpServletRequest imgFiles,//=============>이미지, 동영상 업로드용 리퀘스트임 (사진여러개 받을수 잇음), 리퀘스트파람으로 받으면 파일 1개만 받을수 잇음.
-			ModelMap modelMap) {
+			ModelMap modelMap) throws Exception {
 		
 		//id 세션 
 		HttpSession session = request.getSession();
@@ -220,7 +233,7 @@ public class CalendarController {
 				
 		//파일 업로드---------------------------------------------------
 		//지금으로써는 딱히 필요 없음  : result
-		String result = "";
+		//String result = "";
 		ArrayList<String> names = new ArrayList<String>();
 		
 		Iterator<String> it = imgFiles.getFileNames();  	 // 겟 네임즈 처럼 화면에서 보내온 파일이름들을 다 받아서 it에 넣어줌
@@ -236,23 +249,45 @@ public class CalendarController {
 				
 				System.out.println("파일 업로드");
 				System.out.println("파일 이름 : " + multipartFile.getOriginalFilename());
-				names.add(multipartFile.getOriginalFilename());
 				System.out.println("파일 크기 : " + multipartFile.getSize());
-				result += saveFile(multipartFile);
+				names.add(saveFile(multipartFile));//multipartFile.getOriginalFilename());
+				//result += saveFile(multipartFile);
 			}
 			
 		}
 		System.out.println(names);
 
 		//-------------------------------------------------db로 
-		int tempMember = 1;
-		int tempShow = 1;
+		//세션의 id를 이용해서 멤버 전체 정보 뽑아옴
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("id", id);
+		
+		EgovMap memberMap = calendarService.selectMember(paramMap);
+
+		
+		int mbNo = Integer.parseInt(memberMap.get("mbNo").toString());
+		//int tempShow = 1;
 	
+		//db로 넘어갈 데이터들 정리
 		Map<String, Object> params = new HashMap<String, Object>();
+		
+		Calendar calendar = Calendar.getInstance();
+		if(title.equals("")) {
+			title += (calendar.get(Calendar.MONTH)+1)+"월 "+calendar.get(Calendar.DATE)+"일 생성된 글";
+		}
+/*	    title += calendar.get(Calendar.YEAR);
+	    fileName += calendar.get(Calendar.MONTH);
+	    fileName += calendar.get(Calendar.DATE);
+	    fileName += calendar.get(Calendar.HOUR);
+	    fileName += calendar.get(Calendar.MINUTE);
+	    fileName += calendar.get(Calendar.SECOND);
+	    fileName += calendar.get(Calendar.MILLISECOND);
+*/
+   
 		params.put("title", title);
-		params.put("mbNo", tempMember);
+		params.put("mbNo", mbNo);
 		params.put("date", date);
-		params.put("show", tempShow);
+		params.put("show", show);
 		params.put("weather", weather);
 		params.put("place", place);
 		params.put("tag", tag);
@@ -263,13 +298,17 @@ public class CalendarController {
 		//mapper를 통해 sql.xml로
 		//sql : writeAll
 		try {
+			//이미지 제외한 내용 ->post 테이블로
 			calendarService.writeAll(params);
 			
-			HashMap<String, Object> map = calendarService.selectLast(tempMember);
-
+			//pt_no가져오기
+			HashMap<String, Object> map = calendarService.selectLast(mbNo);
 			params.put("ptNo", map.get("PT_NO"));
+			
+			
 			for(String name : names) {
 				params.put("name", name);
+				params.put("imgUrl", PREFIX_URL+name);
 				
 				calendarService.insertImage(params);
 			}
@@ -281,7 +320,7 @@ public class CalendarController {
 		
 
 		//jsp로
-		modelMap.addAttribute("member", tempMember);
+		modelMap.addAttribute("member", mbNo);
 
 		return "redirect:calendar.do";
 	}
@@ -304,5 +343,11 @@ public class CalendarController {
 
 	    return saveName;
 	} // end saveFile
+	
+	@RequestMapping("photoTest.do")
+	public String photoTest() throws Exception {
+
+		return "photoTest";
+	}
 
 }
